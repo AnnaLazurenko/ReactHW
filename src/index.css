@@ -1,0 +1,66 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+.container {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.messageList {
+  height: calc(100vh - 200px);
+  padding-right: 24px;
+  overflow: scroll;
+}
+
+.messageList_item {
+  margin-top: 36px;
+  word-wrap: break-word;
+}
+
+.messageList_item_author {
+  color: blueviolet;
+}
+
+.messageForm {
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  height: 150px;
+  position: fixed;
+  bottom: 0;
+}
+
+.messageForm #text {
+  height: 50px;
+  padding: 8px;
+}
+
+.messageFrom_bottom {
+  margin: 24px 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.messageFrom_bottom input {
+  width: 30%;
+}
+
+.messageFrom_bottom button {
+  background-color: aquamarine;
+  width: 25%;
+}
+
+.messageFrom_bottom button:hover {
+  cursor: pointer;
+}
