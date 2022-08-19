@@ -1,0 +1,94 @@
+import React, { Component } from 'react';
+import {useEffect, useState, useRef} from "react";
+
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import { imageListClasses, Link, TextField } from '@mui/material';
+
+
+import {useParams, useOutletContext} from 'react-router-dom';
+
+const Chat = () => {
+    const [messageList, setMessageList] = useState([]);
+    const [chatList, setChatList] = useOutletContext();
+
+    let { id } = useParams();
+    let name = chatList.find(chat => chat.id == id).name;
+
+    function getMessage(event) {
+        event.preventDefault();
+        let target = event.target;
+        let author = target.author.value;
+        let text = target.text.value;
+
+        setMessageList(prev => [...prev, {
+            'author': author.length ? author : 'Anonimus', 
+            'text': text,
+            'id': getId(prev)}]);
+
+        console.log(`${messageList}`);
+        target.author.value = '';
+        target.text.value = '';
+    } 
+
+    useEffect(() => {
+        setTimeout(()=> {
+            botAnswer(messageList)
+        }, 1500)
+    }, [messageList]);
+
+    function botAnswer() {
+        const lastMessage = messageList[messageList.length - 1];
+        
+        if (lastMessage != null && lastMessage.author != name) {
+            let answers = [`Да что ты говоришь, ${lastMessage.author}!`, `Полностью согласен с ${lastMessage.author}.`, `${lastMessage.author}, расслабься, попей чаю`, `${lastMessage.author}! Такой прекрасный день, а ты за компом сидишь!`];
+            setMessageList(prev => [...prev, {
+                'id': getId(prev),
+                'author': name,
+                'text': answers[(Math.round(Math.random() * (answers.length - 1)))],
+            }])
+        }
+    }
+
+    function getId(arr) {
+        return arr.length ? arr[arr.length - 1].id + 1 : 0;
+    }
+
+    return (
+            <Box component="main" sx={{ flexGrow: 1, p: 3, 
+            // width: `70%`
+            width: '70vw' 
+            }}>
+                    <Box sx={{height: "calc(100vh - 250px)", paddingRight: "24px", overflow: 'scroll'}}>
+
+                        {messageList.map(message =>
+                            <Box sx={{marginTop: '36px', wordWrap: 'break-word'}} key={message.id}>
+                                <Typography paragraph sx={{color: "#8a2be2"}}>{message.author}:</Typography>
+                                <Typography paragraph>{message.text}</Typography>
+                            </Box>
+                        )}
+
+                    </Box>
+
+                    <Box component="form" noValidate sx={{display: 'flex',
+                        flexDirection: 'column',
+                        height: '200px',
+                        position: 'fixed',
+                        bottom: '8px',
+                        width: '70%'
+                    }}
+                     onSubmit={getMessage}>
+                        
+                        <TextField variant="outlined" multiline rows={3} required autoFocus helperText="Field can't be empty" id='text' name='text' placeholder='Write your message'/>
+
+                        <Box sx={{margin: '24px 0', display: 'flex', justifyContent: 'space-between'}}>
+                            <TextField variant="standard" type='text' id='author' name='author' placeholder='Nickname'/>
+                            <Button sx={{backgroundColor:"#03fcec", color:"#324e85", width: '25%'}} variant='contained' type='submit'>Send message</Button>
+                        </Box>
+                    </Box>
+                </Box>
+        );
+}
+
+export default Chat;
